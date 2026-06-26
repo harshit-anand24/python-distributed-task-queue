@@ -7,52 +7,129 @@ A high-performance, decoupled asynchronous task distribution architecture built 
 * **Efficient Daemon Polling:** Uses atomic blocking operations (`BRPOP`) inside isolated background workers to enforce 0% CPU consumption during idle cluster phases.
 * **Centralized Shared State Matrix:** Utilizes Redis Hashes to maintain real-time task completion statistics, dynamic traceback tracking, and node execution attribution logs.
 
-### Terminal Workspace Execution Logs
+### Advanced Cluster Network Execution Logs
 
-````text
+```text
+=== WINDOW 1: APP SERVER WORKLOAD DISPATCHER ===
+Last login: Fri Jun 26 13:17:39 on ttys000
+(base) harshitanand@Harshits-MacBook-Air-2 client % python app.py 
 ==================================================================
 BOOTING APP SERVER WORKLOAD DISPATCHER
 ==================================================================
-
-[Client] Dispatched: 'compute_factorial' with args (50,). Task signed as ID [5d5550f5-b8b0-4854-9797-06b1300156f6]
-[Client] Dispatched: 'transform_data_payload' with args ('   systems engineering optimization validation   ',). Task signed as ID [4f0edbe7-1c6b-43f9-8d8a-77f5a12147d7]
+[Client] Dispatching: 'optimize_image_payload'...
+[Client] Dispatching: 'send_automated_email'...
+[Client] Dispatching: 'fetch_and_aggregate_api_data'...
+[Client] Dispatching: 'export_raw_data_to_csv'...
 
 [Client] Non-blocking dispatch pass clear! Main application loop remains completely unblocked.
 [Client] Polling cluster network for background task completion state updates...
 
->>> Async Metrics for Factorial Task:
+>>> Async Metrics for Image Optimization Task (ID: ffd98951-086e-40ce-b8b1-b5f8b8970b5f):
 {
-    "status": "SUCCESS",
-    "output": "304140932017133780436126081660...",
-    "executed_by": "61fae969"
+    "output": {
+        "status": "SUCCESS",
+        "message": "Successfully optimized and filtered image frame.",
+        "metrics": {
+            "saved_filepath": "optimized_profile_pic.png",
+            "new_dimensions": "800x450",
+            "compression_quality": "90%",
+            "file_size_bytes": 6638
+        }
+    },
+    "executed_by": "e1c999a3",
+    "status": "SUCCESS"
 }
 
->>> Async Metrics for String Transformation Task:
+>>> Async Metrics for Automated Verification Email Task (ID: 96bf0bb9-5103-4095-b2f4-487d56b5e06e):
 {
-    "status": "SUCCESS",
-    "output": "NOITADILAV NOITAZIMITPO GNIREENIGNE SMETSYS",
-    "executed_by": "a22eb0c4"
+    "output": {
+        "status": "SANDBOX_VERIFIED",
+        "message": "Mail processed and recorded in local dispatch logs.",
+        "delivery_recipient": "harshit@example.com",
+        "smtp_payload_preview": {
+            "from": "system-daemon@sandbox-cluster.io",
+            "to": "harshit@example.com",
+            "subject": "Security Verification Required",
+            "content_type": "text/html"
+        }
+    },
+    "executed_by": "6cc18159",
+    "status": "SUCCESS"
+}
+
+>>> Async Metrics for API Analytics Aggregation Task (ID: 0bce128d-7ee9-4f8f-b774-f086f0689c32):
+{
+    "output": {
+        "status": "SUCCESS",
+        "source_endpoint": "https://jsonplaceholder.typicode.com/posts",
+        "analytics": {
+            "parsed_records_count": 100,
+            "unique_active_users_detected": 10,
+            "average_words_per_title": 6.13,
+            "most_active_contributor_id": 1,
+            "processing_timestamp": 1782465540.16997
+        }
+    },
+    "executed_by": "e1c999a3",
+    "status": "SUCCESS"
+}
+
+>>> Async Metrics for Structured CSV Exporter Task (ID: cdce760c-cf5c-4f89-b1c5-850d413025c5):
+{
+    "output": {
+        "status": "SUCCESS",
+        "target_file": "infrastructure_report.csv",
+        "metrics": {
+            "compiled_rows": 4,
+            "column_headers": [
+                "id",
+                "name",
+                "role",
+                "active_nodes"
+            ],
+            "file_size_bytes": 187
+        }
+    },
+    "executed_by": "e1c999a3",
+    "status": "SUCCESS"
 }
 ```
 
 ```text
+=== WINDOW 2: RUNTIME DAEMON - WORKER_ID [e1c999a3] ===
+Last login: Fri Jun 26 14:36:36 on ttys001
+(base) harshitanand@Harshits-MacBook-Air-2 worker % python worker.py
 ==================================================================
-BOOTING RUNTIME DAEMON: WORKER_ID [a22eb0c4] ONLINE
+BOOTING RUNTIME DAEMON: WORKER_ID [e1c999a3] ONLINE
 ==================================================================
 Listening gracefully to broker channel 'distributed_task_queue'...
 
-[Event] Picked up Job ID [4f0edbe7-1c6b-43f9-8d8a-77f5a12147d7] -> Executing target: 'transform_data_payload'
-[Computation] Cleaning and mutating raw string payload...
-[Success] Job ID [4f0edbe7-1c6b-43f9-8d8a-77f5a12147d7] calculated cleanly. Results pushed to state database.
+[Event] Picked up Job ID [ffd98951-086e-40ce-b8b1-b5f8b8970b5f] -> Executing target: 'optimize_image_payload'
+[Image Task] Processing image: profile_pic.png
+[Image Task] File profile_pic.png not found. Creating a temporary mock canvas...
+[Success] Job ID [ffd98951-086e-40ce-b8b1-b5f8b8970b5f] calculated cleanly. Results pushed to state database.
+
+[Event] Picked up Job ID [0bce128d-7ee9-4f8f-b774-f086f0689c32] -> Executing target: 'fetch_and_aggregate_api_data'
+[Analytics Task] Querying remote datastore endpoint: https://jsonplaceholder.typicode.com/posts
+[Analytics Task] Fetched 100 data structures. Running aggregation formulas...
+[Success] Job ID [0bce128d-7ee9-4f8f-b774-f086f0689c32] calculated cleanly. Results pushed to state database.
+
+[Event] Picked up Job ID [cdce760c-cf5c-4f89-b1c5-850d413025c5] -> Executing target: 'export_raw_data_to_csv'
+[Export Task] Processing raw tabular array into file: infrastructure_report.csv
+[Success] Job ID [cdce760c-cf5c-4f89-b1c5-850d413025c5] calculated cleanly. Results pushed to state database.
 ```
 
 ```text
+=== WINDOW 3: RUNTIME DAEMON - WORKER_ID [6cc18159] ===
+Last login: Fri Jun 26 14:38:48 on ttys005
+(base) harshitanand@Harshits-MacBook-Air-2 worker % python worker.py
 ==================================================================
-BOOTING RUNTIME DAEMON: WORKER_ID [61fae969] ONLINE
+BOOTING RUNTIME DAEMON: WORKER_ID [6cc18159] ONLINE
 ==================================================================
 Listening gracefully to broker channel 'distributed_task_queue'...
 
-[Event] Picked up Job ID [5d5550f5-b8b0-4854-9797-06b1300156f6] -> Executing target: 'compute_factorial'
-[Computation] Executing factorial calculation for n=50...
-[Success] Job ID [5d5550f5-b8b0-4854-9797-06b1300156f6] calculated cleanly. Results pushed to state database.
+[Event] Picked up Job ID [96bf0bb9-5103-4095-b2f4-487d56b5e06e] -> Executing target: 'send_automated_email'
+[Email Task] Generating HTML template payload for harshit@example.com...
+[Email Task] [SANDBOX MODE] Simulating network latency...
+[Success] Job ID [96bf0bb9-5103-4095-b2f4-487d56b5e06e] calculated cleanly. Results pushed to state database.
 ```

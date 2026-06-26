@@ -1,0 +1,5 @@
+id,name,role,active_nodes
+101,Harshit Anand,Systems Architect,4
+102,Production Worker A,GPU Crunch Node,12
+103,Production Worker B,I/O API Fetcher,8
+104,Redis Cluster Agent,Broker Queue,1
