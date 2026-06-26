@@ -7,9 +7,8 @@ A high-performance, decoupled asynchronous task distribution architecture built 
 * **Efficient Daemon Polling:** Uses atomic blocking operations (`BRPOP`) inside isolated background workers to enforce 0% CPU consumption during idle cluster phases.
 * **Centralized Shared State Matrix:** Utilizes Redis Hashes to maintain real-time task completion statistics, dynamic traceback tracking, and node execution attribution logs.
 
-## Cluster Execution Logs
-🖥️ TERMINAL 1: CLIENT DISPATCHER
-Plaintext
+### Terminal Workspace Execution Logs
+
 ==================================================================
 BOOTING APP SERVER WORKLOAD DISPATCHER
 ==================================================================
@@ -30,21 +29,12 @@ BOOTING APP SERVER WORKLOAD DISPATCHER
 >>> Async Metrics for String Transformation Task:
 {
     "status": "SUCCESS",
-    "output": "SYSTEMS ENGINEERING OPTIMIZATION VALIDATION",
+    "output": "NOITADILAV NOITAZIMITPO GNIREENIGNE SMETSYS",
     "executed_by": "a22eb0c4"
 }
-⚙️ TERMINAL 2: WORKER DAEMON (ID: 61fae969)
-Plaintext
-==================================================================
-BOOTING RUNTIME DAEMON: WORKER_ID [61fae969] ONLINE
-==================================================================
-Listening gracefully to broker channel 'distributed_task_queue'...
+```
 
-[Event] Picked up Job ID [5d5550f5-b8b0-4854-9797-06b1300156f6] -> Executing target: 'compute_factorial'
-[Computation] Executing factorial calculation for n=50...
-[Success] Job ID [5d5550f5-b8b0-4854-9797-06b1300156f6] calculated cleanly. Results pushed to state database.
-⚙️ TERMINAL 3: WORKER DAEMON (ID: a22eb0c4)
-Plaintext
+```text
 ==================================================================
 BOOTING RUNTIME DAEMON: WORKER_ID [a22eb0c4] ONLINE
 ==================================================================
@@ -53,3 +43,15 @@ Listening gracefully to broker channel 'distributed_task_queue'...
 [Event] Picked up Job ID [4f0edbe7-1c6b-43f9-8d8a-77f5a12147d7] -> Executing target: 'transform_data_payload'
 [Computation] Cleaning and mutating raw string payload...
 [Success] Job ID [4f0edbe7-1c6b-43f9-8d8a-77f5a12147d7] calculated cleanly. Results pushed to state database.
+```
+
+```text
+==================================================================
+BOOTING RUNTIME DAEMON: WORKER_ID [61fae969] ONLINE
+==================================================================
+Listening gracefully to broker channel 'distributed_task_queue'...
+
+[Event] Picked up Job ID [5d5550f5-b8b0-4854-9797-06b1300156f6] -> Executing target: 'compute_factorial'
+[Computation] Executing factorial calculation for n=50...
+[Success] Job ID [5d5550f5-b8b0-4854-9797-06b1300156f6] calculated cleanly. Results pushed to state database.
+```
