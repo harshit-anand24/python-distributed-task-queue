@@ -9,6 +9,7 @@ A high-performance, decoupled asynchronous task distribution architecture built 
 
 ### Terminal Workspace Execution Logs
 
+````text
 ==================================================================
 BOOTING APP SERVER WORKLOAD DISPATCHER
 ==================================================================
